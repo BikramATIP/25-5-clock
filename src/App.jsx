@@ -6,7 +6,7 @@ import IncrementDecrementButton from './incrementDecrementButton';
 import FunctionButton from './functionButton';
 
 const STOPPED = 'stopped';
-const SESSION = 'session';
+const RUNNING = 'running';
 
 export const ACTIONS = {
   INCREMENT_BREAK: 'increment-break',
@@ -21,7 +21,7 @@ export const ACTIONS = {
 const initialState = {
   breakLength: 5,
   sessionLength: 25,
-  timeLeft: 25 * 60,
+  timeLeft: 1500,
   timerState: STOPPED,
   timerType: SESSION
 }
@@ -35,25 +35,38 @@ const formatTime = (timeInSeconds) => {
 const reducer = (state, {type}) => {
   switch(type) {
     case ACTIONS.INCREMENT_BREAK:
+      if (state.timerState === RUNNING ||
+         state.breakLength === 60) return state;
       return {
         ...state,
         breakLength: state.breakLength + 1,
       };
     case ACTIONS.DECREMENT_BREAK:
+      if (state.breakLength === 1 ||
+        timerState === RUNNING
+      ) return state;
       return {
         ...state,
         breakLength: state.breakLength - 1,
       }
     case ACTIONS.INCREMENT_SESSION:
+      if (state.sessionLength === 60 ||
+        state.timerState === RUNNING
+      ) return state;
       return {
         ...state,
         sessionLength: state.sessionLength + 1,
       }
     case ACTIONS.DECREMENT_SESSION:
+      if (state.sessionLength === 1 ||
+        state.timerState === RUNNING
+      ) return state;
       return {
         ...state,
         sessionLength: state.sessionLength - 1,
       }
+      case ACTIONS.RESET:
+        return initialState;
     default:
       return state;
   }
