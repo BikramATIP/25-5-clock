@@ -3,6 +3,7 @@ import { faPlay, faPause, faSync } from '@fortawesome/free-solid-svg-icons'
 import { useReducer } from 'react'
 import './App.css'
 import IncrementDecrementButton from './incrementDecrementButton';
+import FunctionButton from './functionButton';
 
 const STOPPED = 'stopped';
 const SESSION = 'session';
@@ -12,7 +13,7 @@ export const ACTIONS = {
   DECREMENT_BREAK: 'decrement-break',
   INCREMENT_SESSION: 'increment-session',
   DECREMENT_SESSION: 'decrement-session',
-  STOPPED: 'stopped',
+  TOGGLE: 'toggle',
   SESSION: 'session',
   BREAK: 'break'
 }
@@ -71,7 +72,7 @@ function App() {
           dispatch={dispatch}
           action={ACTIONS.DECREMENT_BREAK}
           />
-
+ 
           <span className="break-length length-time" id="break-length">{breakLength}</span>
 
           <IncrementDecrementButton
@@ -113,15 +114,27 @@ function App() {
       </div>   {/* end of top-controls-container */}
       <div className="timer-container">
        <div id="timer-label" className="timer-label">Session</div>
-       <div id="time-left" className="time-left">25:00</div>
+       <div id="time-left" className="time-left">{timeLeft}</div>
       </div>
       <div className='bottom-controls-container'>
-       <button id="start_stop" className='start_stop'
-       onClick={() => null}
-       ><FontAwesomeIcon icon={faPlay} /><FontAwesomeIcon icon={faPause} /></button>
-       <button id="reset" className='reset'
-       onClick={() => null}
-       ><FontAwesomeIcon icon={faSync} /></button>
+
+      <FunctionButton 
+       id="start_stop"
+       className="start_stop"
+       dispatch={dispatch}
+       action={ACTIONS.STOPPED}
+       firstIcon={faPlay}
+       secondIcon={faPause}
+      />
+      
+      <FunctionButton
+       id="reset"
+       className="reset"
+       dispatch={dispatch}
+       action={ACTIONS.RESET}
+       firstIcon={faSync}
+      />
+
         </div>
     </div>
     </>
