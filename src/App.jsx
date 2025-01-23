@@ -7,6 +7,8 @@ import FunctionButton from './functionButton';
 
 const STOPPED = 'stopped';
 const RUNNING = 'running';
+const SESSION = 'session';
+const BREAK = 'break';
 
 export const ACTIONS = {
   INCREMENT_BREAK: 'increment-break',
@@ -14,8 +16,6 @@ export const ACTIONS = {
   INCREMENT_SESSION: 'increment-session',
   DECREMENT_SESSION: 'decrement-session',
   TOGGLE: 'toggle',
-  SESSION: 'session',
-  BREAK: 'break'
 }
 
 const initialState = {
@@ -43,7 +43,7 @@ const reducer = (state, {type}) => {
       };
     case ACTIONS.DECREMENT_BREAK:
       if (state.breakLength === 1 ||
-        timerState === RUNNING
+        state.timerState === RUNNING
       ) return state;
       return {
         ...state,
