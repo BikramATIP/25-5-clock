@@ -25,8 +25,29 @@ const initialState = {
   timerType: SESSION
 }
 
- const reducer = (state, {type, payload: {}}) => {
-  
+ const reducer = (state, {type}) => {
+   switch(type) {
+    case ACTIONS.INCREMENT_BREAK:
+      return {
+        ...state,
+        breakLength: state.breakLength + 1,
+      }
+    case ACTIONS.DECREMENT_BREAK:
+      return {
+        ...state,
+        breakLength: state.breakLength - 1,
+      }
+    case ACTIONS.INCREMENT_SESSION:
+      return {
+        ...state,
+        sessionLength: state.sessionLength + 1,
+      }
+    case ACTIONS.DECREMENT_SESSION:
+      return {
+        ...state,
+        sessionLength: state.sessionLength - 1,
+   }
+  }
  }
 
 function App() {
@@ -78,7 +99,13 @@ function App() {
           
           <span id="session-length" className="session-length length-time">{sessionLength}</span>
 
-          <button id="session-increment" className="session-increment">+</button>
+          <IncrementDecrementButton
+          id="session-increment"
+          className="session-increment"
+          digit="-"
+          dispatch={dispatch}
+          action={ACTIONS.INCREMENT_SESSION}
+          />
 
          </div>
         </div>
