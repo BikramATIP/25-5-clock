@@ -26,6 +26,12 @@ const initialState = {
   timerType: SESSION
 }
 
+const formatTime = (timeInSeconds) => {
+  const minutes = Math.floor(timeInSeconds / 60);
+  const seconds = timeInSeconds % 60;
+  return `${minutes}${seconds < 10 ? ':0' : ':'}${seconds}`;
+}
+
  const reducer = (state, {type}) => {
    switch(type) {
     case ACTIONS.INCREMENT_BREAK:
@@ -103,7 +109,7 @@ function App() {
           <IncrementDecrementButton
           id="session-increment"
           className="session-increment"
-          digit="-"
+          digit="+"
           dispatch={dispatch}
           action={ACTIONS.INCREMENT_SESSION}
           />
@@ -114,7 +120,7 @@ function App() {
       </div>   {/* end of top-controls-container */}
       <div className="timer-container">
        <div id="timer-label" className="timer-label">Session</div>
-       <div id="time-left" className="time-left">{timeLeft}</div>
+       <div id="time-left" className="time-left">{formatTime(timeLeft)}</div>
       </div>
       <div className='bottom-controls-container'>
 
