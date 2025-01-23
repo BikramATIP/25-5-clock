@@ -2,6 +2,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlay, faPause, faSync } from '@fortawesome/free-solid-svg-icons'
 import { useReducer } from 'react'
 import './App.css'
+import IncrementDecrementButton from './incrementDecrementButton';
 
 const STOPPED = 'stopped';
 const SESSION = 'session';
@@ -41,18 +42,44 @@ function App() {
        <div className="break-length-container top-control">
         <span id="break-label" className="break-label">Break Length</span>
         <div className="break-controls">
-          <button id="break-decrement" className="break-decrement">-</button>
+
+          <IncrementDecrementButton
+          id="break-decrement"
+          className="break-decrement"
+          digit="-"
+          dispatch={dispatch}
+          action={ACTIONS.DECREMENT_BREAK}
+          />
+
           <span className="break-length length-time" id="break-length">{breakLength}</span>
-          <button id="break-increment" className="break-increment">+</button>
+
+          <IncrementDecrementButton
+          id="break-increment"
+          className="break-increment"
+          digit="+"
+          dispatch={dispatch}
+          action={ACTIONS.INCREMENT_BREAK}
+          />
+
         </div>
        </div>
        <div className="session-length-container top-control">
         <div className="session-controls">
          <span id="session-label" className="session-label">Session Length</span>
          <div className="session-controls">
-          <button id="session-decrement" className="session-decrement">-</button>
+
+         <IncrementDecrementButton
+          id="session-decrement"
+          className="session-decrement"
+          digit="-"
+          dispatch={dispatch}
+          action={ACTIONS.DECREMENT_SESSION}
+          />
+          
           <span id="session-length" className="session-length length-time">{sessionLength}</span>
+
           <button id="session-increment" className="session-increment">+</button>
+
          </div>
         </div>
        </div>

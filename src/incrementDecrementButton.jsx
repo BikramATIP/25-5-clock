@@ -1,7 +1,11 @@
-import { ACTIONS } from './App';
-
-export default function incrementDecrementButton(className, dispatch) {
+export default function IncrementDecrementButton({id, className, dispatch, digit}) {
   return (
-    <div>incrementDecrementButton</div>
+    <button
+     id={id}
+     className={className}
+     
+    >
+    {digit}
+    </button>
   )
 }
