@@ -32,13 +32,13 @@ const formatTime = (timeInSeconds) => {
   return `${minutes}${seconds < 10 ? ':0' : ':'}${seconds}`;
 }
 
- const reducer = (state, {type}) => {
-   switch(type) {
+const reducer = (state, {type}) => {
+  switch(type) {
     case ACTIONS.INCREMENT_BREAK:
       return {
         ...state,
         breakLength: state.breakLength + 1,
-      }
+      };
     case ACTIONS.DECREMENT_BREAK:
       return {
         ...state,
@@ -53,14 +53,15 @@ const formatTime = (timeInSeconds) => {
       return {
         ...state,
         sessionLength: state.sessionLength - 1,
-   }
+      }
+    default:
+      return state;
   }
- }
+}
 
 function App() {
- const [{breakLength, sessionLength, timeLeft, timerState, timerType}, dispatch] = useReducer(reducer, initialState)
-
- 
+  const [state, dispatch] = useReducer(reducer, initialState);
+  const { breakLength, sessionLength, timeLeft, timerState, timerType } = state;
 
   return (
     <>
