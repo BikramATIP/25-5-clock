@@ -3,7 +3,7 @@ import { faPlay, faPause, faSync } from '@fortawesome/free-solid-svg-icons'
 import { useReducer, useEffect, useRef } from 'react'
 import './App.css'
 import IncrementDecrementButton from './incrementDecrementButton';
-import FunctionButton from './functionButton';
+import FunctionButton from './FunctionButton';
 
 const STOPPED = 'stopped';
 const RUNNING = 'running';
