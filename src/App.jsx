@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlay, faPause, faSync } from '@fortawesome/free-solid-svg-icons'
-import { useReducer } from 'react'
+import { useReducer, useEffect } from 'react'
 import './App.css'
 import IncrementDecrementButton from './incrementDecrementButton';
 import FunctionButton from './functionButton';
@@ -15,7 +15,8 @@ export const ACTIONS = {
   DECREMENT_BREAK: 'decrement-break',
   INCREMENT_SESSION: 'increment-session',
   DECREMENT_SESSION: 'decrement-session',
-  TOGGLE: 'toggle',
+  TOGGLE_STATE: 'toggle',
+  TICK: 'tick'
 }
 
 const initialState = {
@@ -25,6 +26,8 @@ const initialState = {
   timerState: STOPPED,
   timerType: SESSION
 }
+
+
 
 const formatTime = (timeInSeconds) => {
   const minutes = Math.floor(timeInSeconds / 60);
@@ -40,6 +43,7 @@ const reducer = (state, {type}) => {
       return {
         ...state,
         breakLength: state.breakLength + 1,
+        timeLeft: (state.breakLength + 1) * 60 
       };
     case ACTIONS.DECREMENT_BREAK:
       if (state.breakLength === 1 ||
@@ -67,14 +71,43 @@ const reducer = (state, {type}) => {
       }
       case ACTIONS.RESET:
         return initialState;
+      case ACTIONS.TOGGLE_STATE:
+        return {
+          ...state, 
+          timerState: state.timerState === STOPPED ? RUNNING : STOPPED
+        }
+      case ACTIONS.TICK:
+        if (state.timeLeft === 0) {
+          const audio = new Audio('https://cdn.freecodecamp.org/testable-projects-fcc/audio/BeepSound.wav')
+          audio.play();
+          return {
+            ...state,
+            timerType: state.timerType === SESSION ? BREAK : SESSION,
+            timeLeft: state.timerType === SESSION ? state.breakLength * 60 : state.sessionLength * 60
+          }
+        }
+        return {
+          ...state,
+          timeLeft: state.timeLeft - 1
+        }
     default:
       return state;
   }
 }
 
+
 function App() {
-  const [state, dispatch] = useReducer(reducer, initialState);
-  const { breakLength, sessionLength, timeLeft, timerState, timerType } = state;
+  const [{breakLength, sessionLength, timeLeft, timerState, timerType}, dispatch] = useReducer(reducer, initialState);
+
+  useEffect(() => {
+    let intervalId;
+    if (timerState === RUNNING) {
+      intervalId = setInterval(() => {
+        dispatch({ type: ACTIONS.TICK });
+      }, 1000);
+    }
+    return () => clearInterval(intervalId);
+  }, [timerState]);
 
   return (
     <>
@@ -142,7 +175,7 @@ function App() {
        id="start_stop"
        className="start_stop"
        dispatch={dispatch}
-       action={ACTIONS.STOPPED}
+       action={ACTIONS.TOGGLE_STATE}
        firstIcon={faPlay}
        secondIcon={faPause}
       />
