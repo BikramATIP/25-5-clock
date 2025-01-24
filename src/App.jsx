@@ -87,15 +87,20 @@ const reducer = (state, {type}) => {
       }
     case ACTIONS.TICK:
       if (state.timeLeft === 0) {
+        const newTimerType = state.timerType === SESSION ? BREAK : SESSION;
+        const newTimeLeft = newTimerType === SESSION ? 
+          state.sessionLength * 60 : 
+          state.breakLength * 60;
+        
         return {
           ...state,
-          timerType: state.timerType === SESSION ? BREAK : SESSION,
-          timeLeft: state.timerType === SESSION ? state.breakLength * 60 : state.sessionLength * 60
-        }
+          timerType: newTimerType,
+          timeLeft: newTimeLeft
+        };
       }
       return {
         ...state,
-        timeLeft: Math.max(0, state.timeLeft - 1)  // Ensure we don't go below 0
+        timeLeft: Math.max(0, state.timeLeft - 1) 
       }
     default:
       return state;
@@ -188,7 +193,9 @@ function App() {
        </div>
       </div>   {/* end of top-controls-container */}
       <div className="timer-container">
-       <div id="timer-label" className="timer-label">{timerState.charAt(0).toUpperCase()}{timerState.slice(1)}</div>
+       <div id="timer-label" className="timer-label">
+         {timerType === SESSION ? 'Session' : 'Break'}
+       </div>
        <div id="time-left" className="time-left">{formatTime(timeLeft)}</div>
       </div>
       <div className='bottom-controls-container'>
