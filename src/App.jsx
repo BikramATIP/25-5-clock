@@ -38,12 +38,11 @@ const formatTime = (timeInSeconds) => {
 const reducer = (state, {type}) => {
   switch(type) {
     case ACTIONS.INCREMENT_BREAK:
-      if (state.timerState === RUNNING ||
-         state.breakLength === 60) return state;
+      if (state.timerState === RUNNING || state.breakLength === 60) return state;
       return {
         ...state,
         breakLength: state.breakLength + 1,
-        timeLeft: (state.breakLength + 1) * 60 
+        timeLeft: state.timerType === BREAK ? (state.breakLength + 1) * 60 : state.timeLeft
       };
     case ACTIONS.DECREMENT_BREAK:
       if (state.breakLength === 1 ||
@@ -52,6 +51,7 @@ const reducer = (state, {type}) => {
       return {
         ...state,
         breakLength: state.breakLength - 1,
+        timeLeft: state.timerType === BREAK ? (state.breakLength - 1) * 60 : state.timeLeft
       }
     case ACTIONS.INCREMENT_SESSION:
       if (state.sessionLength === 60 ||
@@ -60,6 +60,7 @@ const reducer = (state, {type}) => {
       return {
         ...state,
         sessionLength: state.sessionLength + 1,
+        timeLeft: state.timerType === SESSION ? (state.sessionLength + 1) * 60 : state.timeLeft
       }
     case ACTIONS.DECREMENT_SESSION:
       if (state.sessionLength === 1 ||
@@ -68,6 +69,7 @@ const reducer = (state, {type}) => {
       return {
         ...state,
         sessionLength: state.sessionLength - 1,
+        timeLeft: state.timerType === SESSION ? (state.sessionLength - 1) * 60 : state.timeLeft
       }
       case ACTIONS.RESET:
         return initialState;
